@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StratejiaKata08.Extendible
+namespace StratejiaKata08.Fastest
 {
-    public class ExtendibleCompoundWordsKata : ICompoundWordsKata
+    public class FastestCompoundWordsKata : ICompoundWordsKata
     {
-        private readonly IList<ICompoundWordsStrategy> _strategies;
+        private readonly IEnumerable<ICompoundWordsStrategy> _strategies;
 
-        public ExtendibleCompoundWordsKata(IEnumerable<ICompoundWordsStrategy> strategies)
+        public FastestCompoundWordsKata(IEnumerable<ICompoundWordsStrategy> strategies)
         {
-            _strategies = strategies.ToList();
+            _strategies = strategies;
         }
 
         public Task<List<string>> Execute(ICompoundWordsKataInput input, CompoundWordStrategyType strategyType)
@@ -22,10 +22,9 @@ namespace StratejiaKata08.Extendible
             var strategy = _strategies.FirstOrDefault(s => s.Supports == strategyType);
 
             if (strategy is null)
-                return Task.FromResult(new List<string>()); 
+                return Task.FromResult(new List<string>());
 
             return strategy.FindCompoundWordsFromList(input);
         }
-
     }
 }
