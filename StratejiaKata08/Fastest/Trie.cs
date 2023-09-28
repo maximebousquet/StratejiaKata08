@@ -39,13 +39,8 @@ namespace StratejiaKata08.Fastest
 
                 currentNode = currentNode.Children[c];
 
-                if (allWords.Contains(word.Substring(i + 1)))
-                        return true;
-
-                if(currentNode.IsTerminal)
-                {
-                    return WordExists(word.Substring(i + 1));
-                }
+                if (currentNode.IsTerminal && allWords.Contains(word.Substring(i + 1)))
+                    return true;
 
                 i++;
             }

@@ -5,6 +5,7 @@ using StratejiaKata08.Extendible;
 using StratejiaKata08.Extendible.DTO;
 using StratejiaKata08.Extendible.Interfaces;
 using StratejiaKata08.Extendible.Strategies;
+using StratejiaKata08.Extendible.Factories;
 
 // DI Setup
 var serviceProvider = new ServiceCollection()
@@ -12,6 +13,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ICompoundWordsStrategy, CartesianProductStrategy>()
     .AddTransient<ICompoundWordsStrategy, TrieStrategy>()
     .AddTransient<IWordsConcatenationValidator, WordsConcatenationValidator>()
+    .AddTransient<ICompoundWordsStrategyFactory, CompoundWordsStrategyFactory>()
     .BuildServiceProvider();
 
 // Load words
@@ -40,7 +42,7 @@ var missingResults = CrossProductresult.Except(trieResult);
 
 sw.Stop();
 
-Console.WriteLine(string.Join("\n", missingResults));
-Console.WriteLine("CrossProd:" + filteredList.Count());
+//Console.WriteLine(string.Join("\n", missingResults));
+//Console.WriteLine("CrossProd:" + filteredList.Count());
 Console.WriteLine("Trie:" + filteredTrieList.Count());
 Console.WriteLine(sw.Elapsed.ToString("mm\\:ss\\.ff"));

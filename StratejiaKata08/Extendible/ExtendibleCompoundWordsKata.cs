@@ -10,19 +10,16 @@ namespace StratejiaKata08.Extendible
 {
     public class ExtendibleCompoundWordsKata : ICompoundWordsKata
     {
-        private readonly IList<ICompoundWordsStrategy> _strategies;
+        private readonly ICompoundWordsStrategyFactory _strategyFactory;
 
-        public ExtendibleCompoundWordsKata(IEnumerable<ICompoundWordsStrategy> strategies)
+        public ExtendibleCompoundWordsKata(ICompoundWordsStrategyFactory strategyFactory)
         {
-            _strategies = strategies.ToList();
+            _strategyFactory = strategyFactory;
         }
 
-        public Task<List<string>> Execute(ICompoundWordsKataInput input, CompoundWordStrategyType strategyType)
+        public Task<List<string>> Execute(CompoundWordsKataInput input, CompoundWordStrategyType strategyType)
         {
-            var strategy = _strategies.FirstOrDefault(s => s.Supports == strategyType);
-
-            if (strategy is null)
-                return Task.FromResult(new List<string>()); 
+            var strategy = _strategyFactory.Create(strategyType);
 
             return strategy.FindCompoundWordsFromList(input);
         }

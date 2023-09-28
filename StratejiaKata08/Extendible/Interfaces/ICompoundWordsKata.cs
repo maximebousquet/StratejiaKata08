@@ -9,6 +9,6 @@ namespace StratejiaKata08.Extendible.Interfaces
 {
     internal interface ICompoundWordsKata
     {
-        public Task<List<string>> Execute(ICompoundWordsKataInput input, CompoundWordStrategyType strategyType);
+        public Task<List<string>> Execute(CompoundWordsKataInput input, CompoundWordStrategyType strategyType);
     }
 }

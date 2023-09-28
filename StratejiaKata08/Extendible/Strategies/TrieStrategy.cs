@@ -8,9 +8,14 @@ namespace StratejiaKata08.Extendible.Strategies
     {
         public CompoundWordStrategyType Supports => CompoundWordStrategyType.TRIE;
 
-        public Task<List<string>> FindCompoundWordsFromList(ICompoundWordsKataInput kataInput)
+        public Task<List<string>> FindCompoundWordsFromList(CompoundWordsKataInput kataInput)
         {
-            if(kataInput.WordLength == 0 || kataInput.Words.Count <= 0)
+            if (kataInput.WordLength == 0 || kataInput.Words.Count <= 0)
+                return Task.FromResult(new List<string>());
+
+            var wordsOfRequiredLength = kataInput.Words.Where(w => w.Length == kataInput.WordLength).ToList();
+
+            if (wordsOfRequiredLength.Count == 0)
                 return Task.FromResult(new List<string>());
 
             kataInput.Words.RemoveAll(w => w.Length > kataInput.WordLength);
@@ -20,11 +25,9 @@ namespace StratejiaKata08.Extendible.Strategies
             kataInput.Words.Where(w => w.Length < kataInput.WordLength).ToList()
                 .ForEach(w => trie.AddWord(w));
 
-            var wordsOfRequiredLength = kataInput.Words.Where(w => w.Length == kataInput.WordLength);
+            var allWordsHashSet = kataInput.Words.ToHashSet();
 
-            var compoundWords = new List<string>();
-
-            return Task.FromResult(wordsOfRequiredLength.Where(w => trie.CompoundOfWordExsits(w)).ToList());
+            return Task.FromResult(wordsOfRequiredLength.Where(w => trie.CompoundOfWordExsits(w, allWordsHashSet)).ToList());
         }
     }
 }

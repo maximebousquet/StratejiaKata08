@@ -7,8 +7,6 @@ namespace StratejiaKata08.Extendible.Strategies
     {
         private readonly IWordsConcatenationValidator _wordsConcatenationValidator;
 
-        private List<string> wordsWithRequiredLength = new List<string>();
-
         public CompoundWordStrategyType Supports => CompoundWordStrategyType.CROSSPRODUCT;
 
         public CartesianProductStrategy(IWordsConcatenationValidator wordsConcatenationValidator)
@@ -16,14 +14,14 @@ namespace StratejiaKata08.Extendible.Strategies
             _wordsConcatenationValidator = wordsConcatenationValidator;
         }
 
-        public async Task<List<string>> FindCompoundWordsFromList(ICompoundWordsKataInput kataInput)
+        public async Task<List<string>> FindCompoundWordsFromList(CompoundWordsKataInput kataInput)
         {
             var words = new List<string>(kataInput.Words);
 
-            if (words.Count <= 0)
+            if (kataInput.WordLength == 0 || kataInput.Words.Count <= 0)
                 return new List<string>();
 
-            wordsWithRequiredLength = words.Where(w => w.Length == kataInput.WordLength).ToList();
+            var wordsWithRequiredLength = words.Where(w => w.Length == kataInput.WordLength).ToList();
 
             if (wordsWithRequiredLength.Count == 0)
                 return new List<string>();

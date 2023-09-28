@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StratejiaKata08.Extendible.DTO
 {
-    public record CompoundWordsKataInput : ICompoundWordsKataInput
+    public record CompoundWordsKataInput
     {
         public List<string> Words { get; init; }
 
