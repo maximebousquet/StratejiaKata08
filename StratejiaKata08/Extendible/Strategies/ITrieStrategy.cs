@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StratejiaKata08.Extendible
+namespace StratejiaKata08.Extendible.Strategies
 {
     public class TrieStrategy : ICompoundWordsStrategy
     {

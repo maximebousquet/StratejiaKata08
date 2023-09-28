@@ -40,21 +40,21 @@
             return results.SelectMany(results => results).ToList();
         }
 
-        private Task<List<string>> CompareCompoundWordCombinations(HashSet<string> firstSet, HashSet<string> secondSet)
+        private Task<List<string>> CompareCompoundWordCombinations(HashSet<string> prefixes, HashSet<string> suffixes)
         {
             var concatenatedWords = new List<string>();
 
-            foreach (var sixLetterWord in SixLetterWords)
+            foreach (var wordToTest in SixLetterWords)
             {
-                foreach (var wordInFirstSet in firstSet)
+                foreach (var prefix in prefixes)
                 {
-                    if (sixLetterWord.StartsWith(wordInFirstSet))
+                    if (wordToTest.StartsWith(prefix))
                     {
-                        var restOfSixLetterWordMissing = sixLetterWord.Substring(wordInFirstSet.Length);
+                        var suffix = wordToTest.Substring(prefix.Length);
 
-                        if (secondSet.Contains(restOfSixLetterWordMissing))
+                        if (suffixes.Contains(suffix))
                         {
-                            concatenatedWords.Add(sixLetterWord);
+                            concatenatedWords.Add(wordToTest);
                         }
                     }
 

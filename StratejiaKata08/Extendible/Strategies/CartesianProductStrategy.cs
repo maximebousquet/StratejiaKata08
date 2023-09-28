@@ -1,7 +1,7 @@
 ﻿using StratejiaKata08.Extendible.DTO;
 using StratejiaKata08.Extendible.Interfaces;
 
-namespace StratejiaKata08.Extendible
+namespace StratejiaKata08.Extendible.Strategies
 {
     public class CartesianProductStrategy : ICompoundWordsStrategy
     {
@@ -25,7 +25,7 @@ namespace StratejiaKata08.Extendible
 
             wordsWithRequiredLength = words.Where(w => w.Length == kataInput.WordLength).ToList();
 
-            if(wordsWithRequiredLength.Count == 0)
+            if (wordsWithRequiredLength.Count == 0)
                 return new List<string>();
 
             words.RemoveAll(w => w.Length >= kataInput.WordLength);

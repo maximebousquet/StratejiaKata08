@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace StratejiaKata08.Extendible.DTO
 {
-    public record CartesianStrategyInput : ICompoundWordsKataInput
+    public record CompoundWordsKataInput : ICompoundWordsKataInput
     {
         public List<string> Words { get; init; }
 
         public int WordLength { get; init; }
 
-        public CartesianStrategyInput(List<string> words, int wordLength)
+        public CompoundWordsKataInput(List<string> words, int wordLength)
         {
             Words = words;
             WordLength = wordLength;

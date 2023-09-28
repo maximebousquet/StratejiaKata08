@@ -9,21 +9,21 @@ namespace StratejiaKata08.Extendible
 {
     public class WordsConcatenationValidator : IWordsConcatenationValidator
     {
-        public Task<List<string>> FindConcatenatedWordsFromHashSetsInList(List<string> wordsToFind, HashSet<string> firstSet, HashSet<string> secondSet)
+        public Task<List<string>> FindConcatenatedWordsFromHashSetsInList(List<string> wordsToFind, HashSet<string> prefixes, HashSet<string> suffixes)
         {
             var concatenatedWords = new List<string>();
 
-            foreach (var wordWithRequiredLength in wordsToFind)
+            foreach (var wordToTest in wordsToFind)
             {
-                foreach (var wordInFirstSet in firstSet)
+                foreach (var prefix in prefixes)
                 {
-                    if (wordWithRequiredLength.StartsWith(wordInFirstSet))
+                    if (wordToTest.StartsWith(prefix))
                     {
-                        var restOfWordMissing = wordWithRequiredLength.Substring(wordInFirstSet.Length);
+                        var suffix = wordToTest.Substring(prefix.Length);
 
-                        if (secondSet.Contains(restOfWordMissing))
+                        if (suffixes.Contains(suffix))
                         {
-                            concatenatedWords.Add(wordWithRequiredLength);
+                            concatenatedWords.Add(wordToTest);
                         }
                     }
 

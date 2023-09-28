@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using StratejiaKata08.Extendible;
 using StratejiaKata08.Extendible.DTO;
 using StratejiaKata08.Extendible.Interfaces;
+using StratejiaKata08.Extendible.Strategies;
 
 // DI Setup
 var serviceProvider = new ServiceCollection()
@@ -25,7 +26,7 @@ sw.Start();
 //var result = await readableKata.Execute();
 
 // ExtendibleKata
-var strategyInput = new CartesianStrategyInput(words, 6);
+var strategyInput = new CompoundWordsKataInput(words, 6);
 
 var compoundWordsKata = serviceProvider.GetService<ICompundWordsKata>();
 
