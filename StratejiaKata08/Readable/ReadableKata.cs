@@ -37,7 +37,7 @@
 
             var results = await Task.WhenAll(tasksToExecute);
 
-            return results.SelectMany(results => results).ToList();
+            return results.SelectMany(results => results).Distinct().ToList();
         }
 
         private Task<List<string>> FindWordsThatAreConcatenationsOf(List<string> sixLetterWords, HashSet<string> prefixes, HashSet<string> suffixes)

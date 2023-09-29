@@ -1,4 +1,5 @@
-﻿using StratejiaKata08.Extendible.Interfaces;
+﻿using StratejiaKata08.Extendible.Enums;
+using StratejiaKata08.Extendible.Interfaces;
 
 namespace StratejiaKata08.Extendible.Factories
 {
