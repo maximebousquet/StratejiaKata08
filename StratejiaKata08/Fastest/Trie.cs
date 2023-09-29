@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StratejiaKata08.Fastest
+﻿namespace StratejiaKata08.Fastest
 {
     public class Trie
     {
@@ -24,7 +18,7 @@ namespace StratejiaKata08.Fastest
                 currentNode = currentNode.Children[c];
             }
 
-            currentNode.IsTerminal = true;
+            currentNode.IsWord = true;
         }
 
         public bool CompoundOfWordExsits(string word, HashSet<string> allWords)
@@ -39,7 +33,7 @@ namespace StratejiaKata08.Fastest
 
                 currentNode = currentNode.Children[c];
 
-                if (currentNode.IsTerminal && allWords.Contains(word.Substring(i + 1)))
+                if (currentNode.IsWord && allWords.Contains(word.Substring(i + 1)))
                     return true;
 
                 i++;

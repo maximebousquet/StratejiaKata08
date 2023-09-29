@@ -6,6 +6,9 @@ using StratejiaKata08.Extendible.DTO;
 using StratejiaKata08.Extendible.Interfaces;
 using StratejiaKata08.Extendible.Strategies;
 using StratejiaKata08.Extendible.Factories;
+using StratejiaKata08.Fastest;
+using StratejiaKata08.Extendible.Services;
+using StratejiaKata08.Extendible.Enums;
 
 // DI Setup
 var serviceProvider = new ServiceCollection()
@@ -16,33 +19,79 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ICompoundWordsStrategyFactory, CompoundWordsStrategyFactory>()
     .BuildServiceProvider();
 
-// Load words
-var words = new List<string>();
-words = File.ReadAllLines("../../../Resources/words.txt").ToList();
+var kata = serviceProvider.GetService<ICompoundWordsKata>();
 
-var sw = new Stopwatch();
-sw.Start();
+WriteOptions();
 
-// ReadableKata
-//var readableKata = new ReadableKata(words);
-//var result = await readableKata.Execute();
+while(true)
+{
+    // Load words
+    var words = File.ReadAllLines("../../../Resources/words.txt").ToList();
 
-// ExtendibleKata
-var strategyInput = new CompoundWordsKataInput(words, 6);
+    var strategyInput = new CompoundWordsKataInput(words, 6);
 
-var compoundWordsKata = serviceProvider.GetService<ICompoundWordsKata>();
+    switch (Console.ReadLine())
+    {
+        case "1":
+            await ExecuteReadibleKata(words);
+            break;
+        case "2":
+            await ExecuteExtendibleWithCrossProdKata(kata, strategyInput);
+            break;
+        case "3":
+            await ExecuteFastestKata(kata, strategyInput);
+            break;
+    }
 
-var trieResult = await compoundWordsKata.Execute(strategyInput, CompoundWordStrategyType.TRIE);
-var filteredTrieList = trieResult.Distinct();
+    WriteOptions();
+}
 
+static void WriteOptions()
+{
+    Console.WriteLine("\nChoose an option from the following list:");
+    Console.WriteLine("\t1 - Execute Readible Kata");
+    Console.WriteLine("\t2 - Execute Extendible Kata (with Cross-product)");
+    Console.WriteLine("\t3 - Execute Fastest Kata");
+    Console.Write("Your option? ");
+}
 
-var CrossProductresult = await compoundWordsKata.Execute(strategyInput, CompoundWordStrategyType.CROSSPRODUCT);
-var filteredList = CrossProductresult.Distinct();
-var missingResults = CrossProductresult.Except(trieResult);
+static async Task ExecuteReadibleKata(List<string> words)
+{
+    var sw = new Stopwatch();
+    sw.Start();
 
-sw.Stop();
+    var readableKata = new ReadableKata(words);
+    var result = await readableKata.Execute();
 
-//Console.WriteLine(string.Join("\n", missingResults));
-//Console.WriteLine("CrossProd:" + filteredList.Count());
-Console.WriteLine("Trie:" + filteredTrieList.Count());
-Console.WriteLine(sw.Elapsed.ToString("mm\\:ss\\.ff"));
+    sw.Stop();
+
+    Console.WriteLine("\nNombre of words: " + result.Count());
+    Console.WriteLine("Elapsed time was: " + sw.Elapsed.ToString("mm\\:ss\\.ff"));
+}
+
+static async Task ExecuteFastestKata(ICompoundWordsKata compoundWordsKata, CompoundWordsKataInput input)
+{
+    var sw = new Stopwatch();
+    sw.Start();
+
+    var trieResult = await compoundWordsKata.ExecuteAsync(input, CompoundWordStrategyType.TRIE);
+
+    sw.Stop();
+
+    Console.WriteLine("\nNumber of words: " + trieResult.Count());
+    Console.WriteLine("Elapsed time was: " + sw.Elapsed.ToString("mm\\:ss\\.ff"));
+}
+
+static async Task ExecuteExtendibleWithCrossProdKata(ICompoundWordsKata compoundWordsKata, CompoundWordsKataInput input)
+{
+    var sw = new Stopwatch();
+    sw.Start();
+
+    var result = await compoundWordsKata.ExecuteAsync(input, CompoundWordStrategyType.CROSSPRODUCT);
+    var filteredResult = result.Distinct();
+
+    sw.Stop();
+
+    Console.WriteLine("\nNumber of words: " + result.Count());
+    Console.WriteLine("Elapsed time was: " + sw.Elapsed.ToString("mm\\:ss\\.ff"));
+}

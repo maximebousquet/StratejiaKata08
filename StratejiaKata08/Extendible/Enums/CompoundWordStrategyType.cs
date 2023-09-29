@@ -1,9 +1,9 @@
-﻿namespace StratejiaKata08.Extendible.Interfaces
+﻿namespace StratejiaKata08.Extendible.Enums
 {
     public enum CompoundWordStrategyType
     {
         CROSSPRODUCT = 1,
 
-        TRIE
+        TRIE = 2
     }
 }

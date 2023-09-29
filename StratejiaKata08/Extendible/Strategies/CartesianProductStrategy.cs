@@ -1,4 +1,5 @@
 ﻿using StratejiaKata08.Extendible.DTO;
+using StratejiaKata08.Extendible.Enums;
 using StratejiaKata08.Extendible.Interfaces;
 
 namespace StratejiaKata08.Extendible.Strategies
@@ -14,7 +15,7 @@ namespace StratejiaKata08.Extendible.Strategies
             _wordsConcatenationValidator = wordsConcatenationValidator;
         }
 
-        public async Task<List<string>> FindCompoundWordsFromList(CompoundWordsKataInput kataInput)
+        public async Task<List<string>> FindCompoundWordsFromListAsync(CompoundWordsKataInput kataInput)
         {
             var words = new List<string>(kataInput.Words);
 
@@ -44,7 +45,7 @@ namespace StratejiaKata08.Extendible.Strategies
                 var oppositeCollection = wordsSeparatedByTheirCharCount.Count() - y;
 
                 tasks.Add(
-                    _wordsConcatenationValidator.FindConcatenatedWordsFromHashSetsInList(wordsWithRequiredLength,
+                    _wordsConcatenationValidator.FindWordsThatAreConcatenationsOf(wordsWithRequiredLength,
                         collectionOfSameCharCountWords,
                         wordsSeparatedByTheirCharCount.ElementAt(oppositeCollection)
                     ));
@@ -54,7 +55,7 @@ namespace StratejiaKata08.Extendible.Strategies
 
             var results = await Task.WhenAll(tasks);
 
-            return results.SelectMany(results => results).ToList();
+            return results.SelectMany(results => results).Distinct().ToList();
         }
     }
 }

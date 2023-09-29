@@ -1,14 +1,14 @@
 ﻿using StratejiaKata08.Extendible.DTO;
+using StratejiaKata08.Extendible.Enums;
 using StratejiaKata08.Extendible.Interfaces;
-using StratejiaKata08.Fastest;
 
-namespace StratejiaKata08.Extendible.Strategies
+namespace StratejiaKata08.Fastest
 {
     public class TrieStrategy : ICompoundWordsStrategy
     {
         public CompoundWordStrategyType Supports => CompoundWordStrategyType.TRIE;
 
-        public Task<List<string>> FindCompoundWordsFromList(CompoundWordsKataInput kataInput)
+        public Task<List<string>> FindCompoundWordsFromListAsync(CompoundWordsKataInput kataInput)
         {
             if (kataInput.WordLength == 0 || kataInput.Words.Count <= 0)
                 return Task.FromResult(new List<string>());
@@ -22,12 +22,15 @@ namespace StratejiaKata08.Extendible.Strategies
 
             var trie = new Trie();
 
-            kataInput.Words.Where(w => w.Length < kataInput.WordLength).ToList()
+            kataInput.Words
+                .Where(w => w.Length < kataInput.WordLength).ToList()
                 .ForEach(w => trie.AddWord(w));
 
             var allWordsHashSet = kataInput.Words.ToHashSet();
 
-            return Task.FromResult(wordsOfRequiredLength.Where(w => trie.CompoundOfWordExsits(w, allWordsHashSet)).ToList());
+            return Task.FromResult(wordsOfRequiredLength
+                .Where(w => trie.CompoundOfWordExsits(w, allWordsHashSet))
+                .ToList());
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     public class ReadableKata
     {
-        private List<string> AllWords = new List<string>();
+        private const int LengthOfWordToFind = 6;
 
-        private List<string> SixLetterWords = new List<string>();
+        private List<string> AllWords = new List<string>();
 
         public ReadableKata(List<string> words)
         {
@@ -16,35 +16,35 @@
             if(AllWords.Count <= 0) 
                 return new List<string>();
 
-            SixLetterWords = AllWords.Where(w => w.Length == 6).ToList();
+            var wordsToFind = AllWords.Where(w => w.Length == LengthOfWordToFind).ToList();
 
-            AllWords.RemoveAll(w => w.Length >= 6);
+            AllWords.RemoveAll(w => w.Length >= LengthOfWordToFind);
 
-            var wordsWithOneLetters = new HashSet<string>(AllWords.Where(w => w.Length == 1));
+            var wordsWithOneLetter = new HashSet<string>(AllWords.Where(w => w.Length == 1));
             var wordsWithTwoLetters = new HashSet<string>(AllWords.Where(w => w.Length == 2));
             var wordsWithThreeLetters = new HashSet<string>(AllWords.Where(w => w.Length == 3));
             var wordsWithFourLetters = new HashSet<string>(AllWords.Where(w => w.Length == 4));
             var wordsWithFiveLetters = new HashSet<string>(AllWords.Where(w => w.Length == 5));
 
-            var tasks = new List<Task<List<string>>>
+            var tasksToExecute = new List<Task<List<string>>>
             {
-                CompareCompoundWordCombinations(wordsWithOneLetters, wordsWithFiveLetters),
-                CompareCompoundWordCombinations(wordsWithTwoLetters, wordsWithFourLetters),
-                CompareCompoundWordCombinations(wordsWithThreeLetters, wordsWithThreeLetters),
-                CompareCompoundWordCombinations(wordsWithFourLetters, wordsWithTwoLetters),
-                CompareCompoundWordCombinations(wordsWithFiveLetters, wordsWithOneLetters)
+                FindWordsThatAreConcatenationsOf(wordsToFind, wordsWithOneLetter, wordsWithFiveLetters),
+                FindWordsThatAreConcatenationsOf(wordsToFind, wordsWithTwoLetters, wordsWithFourLetters),
+                FindWordsThatAreConcatenationsOf(wordsToFind, wordsWithThreeLetters, wordsWithThreeLetters),
+                FindWordsThatAreConcatenationsOf(wordsToFind, wordsWithFourLetters, wordsWithTwoLetters),
+                FindWordsThatAreConcatenationsOf(wordsToFind, wordsWithFiveLetters, wordsWithOneLetter)
             };
 
-            var results = await Task.WhenAll(tasks);
+            var results = await Task.WhenAll(tasksToExecute);
 
             return results.SelectMany(results => results).ToList();
         }
 
-        private Task<List<string>> CompareCompoundWordCombinations(HashSet<string> prefixes, HashSet<string> suffixes)
+        private Task<List<string>> FindWordsThatAreConcatenationsOf(List<string> sixLetterWords, HashSet<string> prefixes, HashSet<string> suffixes)
         {
             var concatenatedWords = new List<string>();
 
-            foreach (var wordToTest in SixLetterWords)
+            foreach (var wordToTest in sixLetterWords)
             {
                 foreach (var prefix in prefixes)
                 {

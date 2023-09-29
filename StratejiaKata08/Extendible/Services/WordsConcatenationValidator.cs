@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StratejiaKata08.Extendible.Interfaces;
 
-namespace StratejiaKata08.Extendible
+namespace StratejiaKata08.Extendible.Services
 {
     public class WordsConcatenationValidator : IWordsConcatenationValidator
     {
-        public Task<List<string>> FindConcatenatedWordsFromHashSetsInList(List<string> wordsToFind, HashSet<string> prefixes, HashSet<string> suffixes)
+        public Task<List<string>> FindWordsThatAreConcatenationsOf(List<string> wordsToFind, HashSet<string> prefixes, HashSet<string> suffixes)
         {
             var concatenatedWords = new List<string>();
 
